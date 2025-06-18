@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabor Tropical - Cardápio Digital</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    
+    :root {
+      --neon-pink: #ff2a6d;
+      --neon-purple: #d300c5;
+      --neon-blue: #05d9e8;
+      --neon-green: #00ff9d;
+      --neon-yellow: #f7d100;
+      --dark-bg: #0d0221;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark-bg);
+      color: white;
+      padding: 0;
+      margin: 0;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 42, 109, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(5, 217, 232, 0.1) 0%, transparent 20%);
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      padding: 20px 0;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--neon-blue), transparent);
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      background: linear-gradient(45deg, var(--neon-yellow), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      color: var(--neon-blue);
+      font-weight: 400;
+      margin-top: 5px;
+      font-size: 1rem;
+    }
+    
+    .section {
+      background: rgba(13, 2, 33, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--neon-pink);
+      margin-right: 10px;
+      box-shadow: 0 0 5px var(--neon-pink);
+    }
+    
+    .option-group {
+      margin: 15px 0;
+    }
+    
+    .option-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      transition: all 0.3s;
+      border-left: 3px solid transparent;
+    }
+    
+    .option-label:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 3px solid var(--neon-blue);
+      transform: translateX(5px);
+    }
+    
+    .option-label span:first-child {
+      flex-grow: 1;
+    }
+    
+    .price {
+      color: var(--neon-yellow);
+      font-weight: 600;
+      margin-left: 10px;
+      min-width: 70px;
+      text-align: right;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 15px;
+    }
+    
+    .quantity-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .quantity-btn:hover {
+      background: var(--neon-blue);
+      color: var(--dark-bg);
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+    
+    .quantity {
+      min-width: 20px;
+      text-align: center;
+      color: white;
+    }
+    
+    button {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 42, 109, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(1px);
+    }
+    
+    button::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transform: rotate(30deg);
+      transition: all 0.3s;
+    }
+    
+    button:hover::after {
+      left: 100%;
+    }
+    
+    #total {
+      font-size: 1.5rem;
+      text-align: right;
+      margin: 25px 0;
+      color: var(--neon-yellow);
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(247, 209, 0, 0.3);
+    }
+    
+    .required::after {
+      content: " *";
+      color: var(--neon-pink);
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 8px 0 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
+    }
+    
+    .açai-bg {
+      position: absolute;
+      opacity: 0.1;
+      z-index: -1;
+    }
+    
+    .bg-1 {
+      top: 10%;
+      left: -50px;
+      width: 200px;
+      transform: rotate(-15deg);
+    }
+    
+    .bg-2 {
+      bottom: 10%;
+      right: -50px;
+      width: 200px;
+      transform: rotate(15deg);
+    }
+    
+    @keyframes neon-pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; text-shadow: 0 0 10px currentColor; }
+    }
+    
+    .neon-effect {
+      animation: neon-pulse 3s infinite;
+    }
+    
+    @media (max-width: 500px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .section {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.imgur.com/JqYeZWn.png" class="açai-bg bg-1" alt="Açaí decorativo">
+    <img src="https://i.imgur.com/JqYeZWn.png" class="açai-bg bg-2" alt="Açaí decorativo">
+    
+    <div class="header">
+      <h1 class="neon-effect">Sabor Tropical</h1>
+      <div class="subtitle">Cardápio Digital Interativo</div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title">👤 Seus Dados</h3>
+      <label for="nome" class="required">Nome:</label>
+      <input type="text" id="nome" placeholder="Seu nome" required>
+
+      <label for="endereco" class="required">Endereço para entrega:</label>
+      <textarea id="endereco" placeholder="Rua, número, bairro, referência" required></textarea>
+
+      <label for="telefone">📱 Telefone:</label>
+      <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX">
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-pink);">🍨 Tamanho do Açaí</h3>
+      <div class="option-group">
+        <label class="option-label">
+          <input type="radio" name="tamanho" value="250ml" data-price="9" required>
+          <span>Pote 250ml</span>
+          <span class="price">R$ 9,00</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="tamanho" value="350ml" data-price="13">
+          <span>Pote 350ml</span>
+          <span class="price">R$ 13,00</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="tamanho" value="500ml" data-price="18">
+          <span>Pote 500ml</span>
+          <span class="price">R$ 18,00</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="tamanho" value="750ml" data-price="24">
+          <span>Pote 750ml</span>
+          <span class="price">R$ 24,00</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="tamanho" value="1000ml" data-price="30">
+          <span>Pote 1000ml</span>
+          <span class="price">R$ 30,00</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-green);">🍫 Acompanhamentos <small>(Até 5)</small></h3>
+      <div class="option-group" id="acompanhamentos">
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Amendolim Triturado" data-max="5">
+          <span>Amendolim Triturado</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Farinha Lacta" data-max="5">
+          <span>Farinha Lacta</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Disquete" data-max="5">
+          <span>Disquete</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Flocos de Arroz" data-max="5">
+          <span>Flocos de Arroz</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Granola" data-max="5">
+          <span>Granola</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Flocos de Aveia" data-max="5">
+          <span>Flocos de Aveia</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Granulado" data-max="5">
+          <span>Granulado</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Leite em pó" data-max="5">
+          <span>Leite em pó</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Choco Ball" data-max="5">
+          <span>Choco Ball</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Marshmallow" data-max="5">
+          <span>Marshmallow</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Choco Power" data-max="5">
+          <span>Choco Power</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Paçoquinha" data-max="5">
+          <span>Paçoquinha</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Jujuba" data-max="5">
+          <span>Jujuba</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Ovomatline" data-max="5">
+          <span>Ovomatline</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Nescau Cereal Ball" data-max="5">
+          <span>Nescau Cereal Ball</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Gotas de Chocolate" data-max="5">
+          <span>Gotas de Chocolate</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Fini Dentadura" data-max="5">
+          <span>Fini Dentadura</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="acompanhamento" value="Bis" data-max="5">
+          <span>Bis</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-blue);">🍯 Coberturas <small>(Até 2)</small></h3>
+      <div class="option-group" id="coberturas">
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Leite Condensado" data-max="2">
+          <span>Leite Condensado</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Chocolate" data-max="2">
+          <span>Calda de Chocolate</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Morango" data-max="2">
+          <span>Calda de Morango</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Uva" data-max="2">
+          <span>Calda de Uva</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Beijo Fini" data-max="2">
+          <span>Calda de Beijo Fini</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Dentadura" data-max="2">
+          <span>Calda de Dentadura</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="cobertura" value="Calda de Banana Fini" data-max="2">
+          <span>Calda de Banana Fini</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-purple);">🥄 Cremes <small>(Até 2)</small></h3>
+      <div class="option-group" id="cremes">
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Açaí" data-max="2">
+          <span>Açaí</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Ninho" data-max="2">
+          <span>Creme de Ninho</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Amendolm" data-max="2">
+          <span>Creme de Amendolm</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Tapioca" data-max="2">
+          <span>Creme de Tapioca</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Morango" data-max="2">
+          <span>Creme de Morango</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Chocomalte" data-max="2">
+          <span>Creme de Chocomalte</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Cupuaçu" data-max="2">
+          <span>Creme de Cupuaçu</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Abacaxi" data-max="2">
+          <span>Creme de Abacaxi</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Oreo" data-max="2">
+          <span>Creme de Oreo</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Bubbaboo" data-max="2">
+          <span>Creme de Bubbaboo</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Café" data-max="2">
+          <span>Creme de Café</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="creme" value="Creme de Banana Caramelizada" data-max="2">
+          <span>Creme de Banana Caramelizada</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-yellow);">🌟 Adicionais Extras</h3>
+      <div class="option-group" id="extras">
+        <div class="option-label">
+          <span>Nutella <span class="price">R$ 5,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Nutella">-</button>
+            <span class="quantity" data-item="Nutella">0</span>
+            <button class="quantity-btn plus" data-item="Nutella">+</button>
+          </div>
+        </div>
+        <div class="option-label">
+          <span>Creme de Ovomatline <span class="price">R$ 3,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Creme de Ovomatline">-</button>
+            <span class="quantity" data-item="Creme de Ovomatline">0</span>
+            <button class="quantity-btn plus" data-item="Creme de Ovomatline">+</button>
+          </div>
+        </div>
+        <div class="option-label">
+          <span>Crocante <span class="price">R$ 3,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Crocante">-</button>
+            <span class="quantity" data-item="Crocante">0</span>
+            <button class="quantity-btn plus" data-item="Crocante">+</button>
+          </div>
+        </div>
+        <div class="option-label">
+          <span>Diamante Negro <span class="price">R$ 4,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Diamante Negro">-</button>
+            <span class="quantity" data-item="Diamante Negro">0</span>
+            <button class="quantity-btn plus" data-item="Diamante Negro">+</button>
+          </div>
+        </div>
+        <div class="option-label">
+          <span>Morango <span class="price">R$ 3,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Morango">-</button>
+            <span class="quantity" data-item="Morango">0</span>
+            <button class="quantity-btn plus" data-item="Morango">+</button>
+          </div>
+        </div>
+        <div class="option-label">
+          <span>Kiwi <span class="price">R$ 3,00</span></span>
+          <div class="quantity-control">
+            <button class="quantity-btn minus" data-item="Kiwi">-</button>
+            <span class="quantity" data-item="Kiwi">0</span>
+            <button class="quantity-btn plus" data-item="Kiwi">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-green);">🍓 Frutas <small>(Até 3)</small></h3>
+      <div class="option-group" id="frutas">
+        <label class="option-label">
+          <input type="checkbox" name="fruta" value="Banana" data-max="3">
+          <span>Banana</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="fruta" value="Abacaxi" data-max="3">
+          <span>Abacaxi</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="fruta" value="Uva" data-max="3">
+          <span>Uva</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="fruta" value="Coco Ralado" data-max="3">
+          <span>Coco Ralado</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="fruta" value="Fresco" data-max="3">
+          <span>Fresco</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3 class="section-title neon-effect" style="color: var(--neon-pink);">🎁 Especial <small>(Até 1)</small></h3>
+      <div class="option-group" id="especial">
+        <label class="option-label">
+          <input type="checkbox" name="especial" value="Doce de Leite" data-max="1">
+          <span>Doce de Leite</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="especial" value="Beijinho" data-max="1">
+          <span>Beijinho</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="especial" value="Kit Kat" data-max="1">
+          <span>Kit Kat</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="especial" value="Bala Fini" data-max="1">
+          <span>Bala Fini</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="especial" value="Oreo" data-max="1">
+          <span>Oreo</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="total">Total: R$ 0,00</div>
+
+    <div class="section">
+      <label for="obs">💬 Observações:</label>
+      <textarea id="obs" placeholder="Alguma observação especial?"></textarea>
+    </div>
+
+    <button onclick="enviarPedido()">
+      📱 ENVIAR PEDIDO VIA WHATSAPP
+    </button>
+  </div>
+
+  <script>
+    // Preços dos adicionais extras
+    const precosExtras = {
+      "Nutella": 5,
+      "Creme de Ovomatline": 3,
+      "Crocante": 3,
+      "Diamante Negro": 4,
+      "Morango": 3,
+      "Kiwi": 3
+    };
+
+    // Controle de quantidade
+    document.querySelectorAll('.quantity-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const item = this.getAttribute('data-item');
+        const quantityElement = document.querySelector(`.quantity[data-item="${item}"]`);
+        let quantity = parseInt(quantityElement.textContent);
+        
+        if (this.classList.contains('plus')) {
+          quantity++;
+        } else if (this.classList.contains('minus') && quantity > 0) {
+          quantity--;
+        }
+        
+        quantityElement.textContent = quantity;
+        calcularTotal();
+      });
+    });
+
+    // Limitar seleção de checkbox
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const groupName = this.getAttribute('name');
+        const max = parseInt(this.getAttribute('data-max'));
+        const checked = document.querySelectorAll(`input[name="${groupName}"]:checked`).length;
+        
+        if (checked > max) {
+          this.checked = false;
+          alert(`Você pode selecionar no máximo ${max} itens nesta categoria.`);
+        }
+        
+        calcularTotal();
+      });
+    });
+
+    // Calcular total
+    function calcularTotal() {
+      let total = 0;
+      
+      // Tamanho do açaí
+      const tamanhoSelecionado = document.querySelector('input[name="tamanho"]:checked');
+      if (tamanhoSelecionado) {
+        total += parseFloat(tamanhoSelecionado.getAttribute('data-price'));
+      }
+      
+      // Adicionais extras
+      document.querySelectorAll('.quantity').forEach(qty => {
+        const item = qty.getAttribute('data-item');
+        const quantity = parseInt(qty.textContent);
+        total += quantity * precosExtras[item];
+      });
+      
+      // Atualizar total
+      document.getElementById('total').textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    // Enviar pedido
+    function enviarPedido() {
+      const nome = document.getElementById('nome').value;
+      const endereco = document.getElementById('endereco').value;
+      const telefone = document.getElementById('telefone').value;
+      const obs = document.getElementById('obs').value;
+      
+      if (!nome || !endereco) {
+        alert('Por favor, preencha seu nome e endereço!');
+        return;
+      }
+      
+      const tamanho = document.querySelector('input[name="tamanho"]:checked');
+      if (!tamanho) {
+        alert('Por favor, selecione o tamanho do açaí!');
+        return;
+      }
+      
+      // Montar resumo do pedido
+      let resumo = `*🍨 Pedido - Sabor Tropical*\n\n` +
+        `*👤 Nome:* ${nome}\n` +
+        `*📞 Telefone:* ${telefone || 'Não informado'}\n` +
+        `*🏠 Endereço:* ${endereco}\n\n` +
+        `*🍧 Tamanho:* ${tamanho.value} - R$ ${parseFloat(tamanho.getAttribute('data-price')).toFixed(2).replace('.', ',')}\n\n`;
+      
+      // Adicionar categorias ao resumo
+      const categorias = [
+        { name: 'acompanhamento', title: 'Acompanhamentos' },
+        { name: 'cobertura', title: 'Coberturas' },
+        { name: 'creme', title: 'Cremes' },
+        { name: 'fruta', title: 'Frutas' },
+        { name: 'especial', title: 'Especial' }
+      ];
+      
+      categorias.forEach(cat => {
+        const itens = Array.from(document.querySelectorAll(`input[name="${cat.name}"]:checked`)).map(cb => cb.value);
+        if (itens.length > 0) {
+          resumo += `*${cat.title}:* ${itens.join(', ')}\n`;
+        }
+      });
+      
+      // Adicionais extras
+      const extras = [];
+      document.querySelectorAll('.quantity').forEach(qty => {
+        const item = qty.getAttribute('data-item');
+        const quantity = parseInt(qty.textContent);
+        if (quantity > 0) {
+          extras.push(`${item} (${quantity}x R$ ${precosExtras[item].toFixed(2).replace('.', ',')})`);
+        }
+      });
+      
+      if (extras.length > 0) {
+        resumo += `*🌟 Extras:* ${extras.join(', ')}\n`;
+      }
+      
+      // Total e observações
+      resumo += `\n*💵 Total:* R$ ${document.getElementById('total').textContent.split('R$ ')[1]}\n` +
+        `*💬 Observações:* ${obs || 'Nenhuma'}\n\n` +
+        `*📅 Enviado em:* ${new Date().toLocaleString('pt-BR')}`;
+      
+      // Enviar para WhatsApp
+      const url = `https://wa.me/558486088604?text=${encodeURIComponent(resumo)}`;
+      window.open(url, '_blank');
+    }
+
+    // Calcular total quando qualquer alteração ocorrer
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+      input.addEventListener('change', calcularTotal);
+    });
+  </script>
+</body>
+  </html>
